@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="e" cx="50%" cy="45%" r="60%"><stop offset="0%" stop-color="#1F6B52"/><stop offset="60%" stop-color="#0E4A3A"/><stop offset="100%" stop-color="#062820"/></radialGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F6E3A8"/><stop offset="45%" stop-color="#D4AF6A"/><stop offset="100%" stop-color="#8C6A2F"/></linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#e)" stroke="url(#g)" stroke-width="3"/>
+  <text x="32" y="40" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-weight="800" font-size="22" fill="url(#g)">C2E</text>
+</svg>
