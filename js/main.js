@@ -14,6 +14,9 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* showPlaceholders (content.js): false = clean demo mode, unfinished items are hidden */
+  var SHOW = C.showPlaceholders !== false;
+  if (!SHOW) document.documentElement.classList.add('ph-hidden');
 
   /* ---------- helpers ---------- */
   function esc(str) {
@@ -22,6 +25,9 @@
     });
   }
   function isPlaceholder(v) { return typeof v === 'string' && v.indexOf('[[') === 0; }
+  function isPhImage(src) { return /REPLACE/.test(src || ''); }
+  /* In clean mode, drop list items that are still placeholders */
+  function ready(list, key) { return SHOW ? list : list.filter(function (x) { return !isPlaceholder(key ? x[key] : x); }); }
   /* Text that may be a [[PLACEHOLDER]]: render placeholders with a visible marker */
   function txt(v) { return isPlaceholder(v) ? '<em class="ph">' + esc(v) + '</em>' : esc(v); }
   function waLink(message) {
@@ -41,10 +47,17 @@
   $$('[data-instagram]').forEach(function (a) { a.href = C.contact.instagram; });
   $$('[data-bind]').forEach(function (el) {
     var v = C.contact[el.getAttribute('data-bind')];
+    if (!SHOW && isPlaceholder(v)) {
+      var box = el.closest('[data-ph-container]');
+      if (box) box.remove(); else el.textContent = '';
+      return;
+    }
     if (v !== undefined && v !== '') el.innerHTML = txt(v);
   });
   var cat = $('#catalogueLink');
-  if (cat) {
+  if (cat && !SHOW && isPlaceholder(C.contact.catalogueLink)) {
+    cat.closest('.catalogue-line').remove();
+  } else if (cat) {
     cat.innerHTML = isPlaceholder(C.contact.catalogueLink)
       ? txt(C.contact.catalogueLink)
       : '<a href="' + esc(C.contact.catalogueLink) + '" target="_blank" rel="noopener">Download the catalogue (PDF)</a>';
@@ -88,7 +101,9 @@
           perCup = '<span class="price__per">Price per cup: ' + perTxt + '</span>';
         }
       } else {
-        priceHtml = '<div class="price price--text">' + txt(p.price) + '</div>';
+        priceHtml = SHOW
+          ? '<div class="price price--text">' + txt(p.price) + '</div>'
+          : '<div class="price price--text">Price on request</div><p class="price__meta">Message us for current sample box pricing</p>';
       }
       var msg = numeric
         ? "Hi CUP2EAT! I'm interested in the " + p.name + ' (' + rupees(p.price) + ' for ' + p.cups + ' cups).'
@@ -99,7 +114,7 @@
           '<h3>' + esc(p.name) + '</h3>' +
           '<p class="pricing-card__tag">' + esc(p.tagline) + '</p>' +
           priceHtml + meta + perCup +
-          '<ul>' + p.features.map(function (f) { return '<li>' + icon('check') + '<span>' + txt(f) + '</span></li>'; }).join('') + '</ul>' +
+          '<ul>' + ready(p.features).map(function (f) { return '<li>' + icon('check') + '<span>' + txt(f) + '</span></li>'; }).join('') + '</ul>' +
           '<a class="btn ' + (p.featured ? 'btn--gold' : 'btn--ghost') + '" href="' + waLink(msg) + '" target="_blank" rel="noopener">' +
             icon('chat') + esc(p.cta) + '</a>' +
         '</article>';
@@ -110,9 +125,12 @@
   var tl = $('#timeline');
   if (tl) {
     tl.innerHTML = C.journey.map(function (j) {
-      return '<li class="moment"><figure>' +
-        '<!-- REPLACE: ' + esc(j.image) + ' with the real event photo -->' +
-        '<img src="' + esc(j.image) + '" data-placeholder="true" width="800" height="600" loading="lazy" alt="' + esc(j.alt) + '">' +
+      /* Clean mode + no real photo yet → a designed emblem panel instead of a grey placeholder */
+      var media = (!SHOW && isPhImage(j.image))
+        ? '<div class="moment__art" aria-hidden="true"><span class="medallion">' + icon(j.icon || 'award') + '</span></div>'
+        : '<!-- REPLACE: ' + esc(j.image) + ' with the real event photo -->' +
+          '<img src="' + esc(j.image) + '" data-placeholder="true" width="800" height="600" loading="lazy" alt="' + esc(j.alt) + '">';
+      return '<li class="moment"><figure>' + media +
         '<figcaption><span class="moment__tag">' + esc(j.tag) + '</span>' + txt(j.caption) + '</figcaption>' +
         '</figure></li>';
     }).join('');
@@ -130,14 +148,27 @@
       if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
     });
     window.addEventListener('resize', syncTl);
-    syncTl();
+    /* measure after first paint, so building the page never forces an early layout */
+    requestAnimationFrame(function () { setTimeout(syncTl, 0); });
   }
 
   /* ---------- 5. Feedback slider (arrows, dots, keyboard, swipe) ---------- */
   var track = $('#sliderTrack');
+  var reviews = SHOW ? C.reviews : C.reviews.filter(function (r) { return !r.sample && !isPlaceholder(r.quote); });
+  if (track && !reviews.length) {
+    /* No real reviews yet: point visitors to the Instagram Feedback highlight instead of showing fake ones */
+    $('#slider').outerHTML =
+      '<div class="review review--solo reveal"><div class="review__card">' +
+        '<span class="review__mark" aria-hidden="true">“</span>' +
+        '<blockquote>Real reactions from cafés, college fests and customers are collected in our Instagram <strong>Feedback</strong> highlight.</blockquote>' +
+        '<a class="btn btn--emerald" href="' + esc(C.contact.instagram) + '" target="_blank" rel="noopener">' + icon('instagram') + 'View feedback on Instagram</a>' +
+      '</div></div>';
+    var more = $('#feedback .more-link'); if (more) more.parentNode.remove();
+    track = null;
+  }
   if (track) {
-    track.innerHTML = C.reviews.map(function (r, i) {
-      return '<div class="review" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' of ' + C.reviews.length + '">' +
+    track.innerHTML = reviews.map(function (r, i) {
+      return '<div class="review" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' of ' + reviews.length + '">' +
         '<!-- REPLACE: sample review, replace with real customer feedback -->' +
         '<div class="review__card">' +
           '<span class="review__mark" aria-hidden="true">“</span>' +
@@ -193,7 +224,7 @@
   /* ---------- 6. FAQ accordion ---------- */
   var faq = $('#faqList');
   if (faq) {
-    faq.innerHTML = C.faq.map(function (f, i) {
+    faq.innerHTML = ready(C.faq, 'a').map(function (f, i) {
       return '<div class="faq__item reveal" style="--i:' + Math.min(i, 4) + '">' +
         '<h3><button class="faq__btn" type="button" id="faq-b' + i + '" aria-expanded="false" aria-controls="faq-p' + i + '">' +
           '<span>' + esc(f.q) + '</span><span class="medallion" aria-hidden="true">' + icon('plus') + '</span></button></h3>' +
@@ -206,6 +237,12 @@
         b.setAttribute('aria-expanded', open ? 'false' : 'true');
       });
     });
+  }
+
+  /* Founder portrait: in clean mode, show the badge until a real photo is added */
+  var portrait = $('.founder__portrait img');
+  if (portrait && !SHOW && isPhImage(portrait.getAttribute('src'))) {
+    portrait.outerHTML = '<div class="founder__badge"><svg viewBox="0 0 200 200" role="img" aria-label="CUP2EAT badge"><use href="#logo-badge"/></svg></div>';
   }
 
   /* ---------- 7. Navbar: solid after 80px, back-to-top after 600px ---------- */
@@ -304,6 +341,10 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { toastEl.classList.remove('is-visible'); }, 4000);
   }
+
+  /* Start decorative loops (float, steam) only after the page has loaded */
+  var startAnim = function () { setTimeout(function () { document.documentElement.classList.add('anim'); }, 300); };
+  if (document.readyState === 'complete') startAnim(); else window.addEventListener('load', startAnim);
 
   /* ---------- 12. Enquiry form → WhatsApp ---------- */
   var form = $('#enquiryForm');

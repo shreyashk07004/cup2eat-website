@@ -26,7 +26,10 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Great+Vibes&family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600&display=swap">
+  <!-- Fonts load without blocking the first paint (text shows in a fallback font, then swaps) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Great+Vibes&family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Great+Vibes&family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Great+Vibes&family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600&display=swap"></noscript>
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- Marks that JavaScript is on (enables reveal animations). Tiny + inline, not render-blocking. -->
@@ -209,9 +212,9 @@
           <svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg> Order on WhatsApp
         </a>
       </div>
-      <ul class="pill-row" style="list-style:none;margin:0;padding:0" aria-label="Why buyers trust CUP2EAT">
+      <ul class="pill-row hero__pills" aria-label="Why buyers trust CUP2EAT">
         <li class="pill pill--trust"><svg class="icon" aria-hidden="true"><use href="#i-seal"/></svg> FSSAI Registered</li>
-        <li class="pill pill--trust"><svg class="icon" aria-hidden="true"><use href="#i-truck"/></svg> Delivery All Over India</li>
+        <li class="pill pill--trust"><svg class="icon" aria-hidden="true"><use href="#i-truck"/></svg> <span class="pill__long">Delivery All Over India</span><span class="pill__short">Pan-India Delivery</span></li>
         <li class="pill pill--trust"><svg class="icon" aria-hidden="true"><use href="#i-cup"/></svg> 3 Flavours</li>
         <li class="pill pill--trust"><svg class="icon" aria-hidden="true"><use href="#i-coffee"/></svg> 100 ml Cups</li>
       </ul>
@@ -224,26 +227,55 @@
       <!-- REPLACE: illustrated hero. Swap for a real photo of the three cups (chocolate/latte, vanilla/chai, elaichi/ice cream) on a wooden plank: hero-cups-REPLACE.webp, ≤200 KB, 1120×940 -->
       <svg class="hero__cups" data-placeholder="true" viewBox="0 0 560 470" role="img" aria-label="Three CUP2EAT edible cups on a wooden plank: chocolate with latte, vanilla with chai and elaichi with ice cream">
         <defs>
-          <linearGradient id="h-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E5A39"/><stop offset="1" stop-color="#5A3522"/></linearGradient>
-          <linearGradient id="h-choc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3A2114"/><stop offset=".35" stop-color="#7A4A2E"/><stop offset=".7" stop-color="#5A3522"/><stop offset="1" stop-color="#2E1A10"/></linearGradient>
-          <linearGradient id="h-van" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C99A5B"/><stop offset=".35" stop-color="#F6E3A8"/><stop offset=".7" stop-color="#E9C98F"/><stop offset="1" stop-color="#A8823F"/></linearGradient>
-          <linearGradient id="h-ela" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9E9A4E"/><stop offset=".35" stop-color="#E6DFAE"/><stop offset=".7" stop-color="#C9C27A"/><stop offset="1" stop-color="#8C8A40"/></linearGradient>
-          <pattern id="h-grid" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0H14M0 0V14" stroke="#2E1A10" stroke-width="1.6" opacity=".28"/></pattern>
+          <linearGradient id="h-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9A6640"/><stop offset=".55" stop-color="#7A4A2E"/><stop offset="1" stop-color="#5A3522"/></linearGradient>
+          <linearGradient id="h-choc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2E1A10"/><stop offset=".3" stop-color="#7A4A2E"/><stop offset=".62" stop-color="#5A3522"/><stop offset="1" stop-color="#24140C"/></linearGradient>
+          <linearGradient id="h-van" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B58648"/><stop offset=".3" stop-color="#F6E3A8"/><stop offset=".62" stop-color="#E9C98F"/><stop offset="1" stop-color="#9C7438"/></linearGradient>
+          <linearGradient id="h-ela" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8C8A40"/><stop offset=".3" stop-color="#E6DFAE"/><stop offset=".62" stop-color="#C9C27A"/><stop offset="1" stop-color="#7E7C38"/></linearGradient>
+          <linearGradient id="h-gloss" x1="0" y1="0" x2="1" y2="0"><stop offset=".14" stop-color="#fff" stop-opacity="0"/><stop offset=".24" stop-color="#fff" stop-opacity=".32"/><stop offset=".32" stop-color="#fff" stop-opacity="0"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/><stop offset=".86" stop-color="#fff" stop-opacity=".12"/><stop offset=".9" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="h-shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".12" stop-color="#000" stop-opacity="0"/><stop offset=".85" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient>
+          <radialGradient id="h-latte" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="#E2C29C"/><stop offset=".7" stop-color="#C79F78"/><stop offset="1" stop-color="#8E5A39"/></radialGradient>
+          <radialGradient id="h-chai" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="#D08A4A"/><stop offset=".75" stop-color="#B8692E"/><stop offset="1" stop-color="#7A3E16"/></radialGradient>
+          <radialGradient id="h-scoopV" cx=".38" cy=".3" r=".7"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#FBF7EE"/><stop offset="1" stop-color="#E4D6B8"/></radialGradient>
+          <radialGradient id="h-scoopC" cx=".38" cy=".3" r=".7"><stop offset="0" stop-color="#8E5A39"/><stop offset=".6" stop-color="#6B3F27"/><stop offset="1" stop-color="#3A2114"/></radialGradient>
+          <radialGradient id="h-scoopW" cx=".38" cy=".3" r=".7"><stop offset="0" stop-color="#F6E3A8"/><stop offset=".6" stop-color="#E9C98F"/><stop offset="1" stop-color="#C99A5B"/></radialGradient>
+          <pattern id="h-grid" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0H14M0 0V14" stroke="#2E1A10" stroke-width="1.5" opacity=".26"/><path d="M1 1H13" stroke="#fff" stroke-width=".8" opacity=".12"/></pattern>
+          <path id="c1" d="M84 232 L216 232 L199 368 Q197 378 188 378 L112 378 Q103 378 101 368 Z"/>
+          <path id="c2" d="M212 196 L368 196 L348 370 Q346 380 336 380 L244 380 Q234 380 232 370 Z"/>
+          <path id="c3" d="M378 244 L502 244 L486 368 Q484 378 476 378 L404 378 Q396 378 394 368 Z"/>
+          <clipPath id="cl1"><use href="#c1"/></clipPath>
+          <clipPath id="cl2"><use href="#c2"/></clipPath>
+          <clipPath id="cl3"><use href="#c3"/></clipPath>
+          <g id="bean"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#4A2A18"/><ellipse cx="-1.5" cy="-1.5" rx="6" ry="3.5" fill="#6B3F27" opacity=".7"/><path d="M-8 0 q4 -3 8 0 t8 0" stroke="#24140C" stroke-width="1.6" fill="none"/></g>
+          <g id="pod"><path d="M-13 0 q13 -9 26 0 q-13 9 -26 0Z" fill="#B9BC6A"/><path d="M-11 0 q11 -5 22 0" stroke="#8C8A40" stroke-width="1.2" fill="none"/><path d="M13 0 l4 -1" stroke="#8C8A40" stroke-width="1.5" stroke-linecap="round"/></g>
         </defs>
 
         <!-- plank -->
-        <rect x="18" y="380" width="524" height="30" rx="8" fill="url(#h-wood)"/>
-        <rect x="18" y="404" width="524" height="14" rx="6" fill="#3A2114"/>
-        <path d="M40 392 H200 M260 396 H420 M450 390 H520" stroke="#A8724A" stroke-width="2" opacity=".5"/>
+        <ellipse cx="280" cy="420" rx="250" ry="14" fill="#000" opacity=".25"/>
+        <rect x="18" y="378" width="524" height="30" rx="8" fill="url(#h-wood)"/>
+        <rect x="18" y="400" width="524" height="16" rx="6" fill="#3A2114"/>
+        <g stroke="#B47E52" stroke-width="1.6" fill="none" opacity=".45" stroke-linecap="round">
+          <path d="M36 388 C110 384 160 392 230 388"/><path d="M260 394 C330 390 380 398 440 392"/><path d="M450 386 C480 384 505 388 528 386"/><path d="M60 398 C140 396 200 400 300 398"/>
+        </g>
+        <!-- beans, cardamom & wafer crumbs on the plank -->
+        <use href="#bean" transform="translate(48 384) rotate(-20)"/>
+        <use href="#bean" transform="translate(518 386) rotate(25) scale(.85)"/>
+        <use href="#pod" transform="translate(224 392) rotate(-8) scale(.8)"/>
+        <use href="#pod" transform="translate(370 394) rotate(12) scale(.7)"/>
+        <g fill="#E9C98F"><path d="M206 382 l6 -4 5 3 -3 5 -7 0Z"/><path d="M356 385 l4 -3 4 2 -2 4 -5 0Z" fill="#C99A5B"/><path d="M500 380 l5 -3 3 3 -3 3Z" fill="#C9C27A"/></g>
 
         <!-- Cup 1: Chocolate + latte -->
         <g class="float">
-          <ellipse cx="150" cy="380" rx="56" ry="6" fill="#000" opacity=".3"/>
-          <path d="M84 232 L216 232 L199 368 Q197 378 188 378 L112 378 Q103 378 101 368 Z" fill="url(#h-choc)"/>
-          <path d="M84 232 L216 232 L199 368 Q197 378 188 378 L112 378 Q103 378 101 368 Z" fill="url(#h-grid)"/>
-          <ellipse cx="150" cy="232" rx="66" ry="13" fill="#8E5A39" stroke="#2E1A10" stroke-width="2"/>
-          <ellipse cx="150" cy="234" rx="57" ry="9.5" fill="#C79F78"/>
-          <path d="M150 241 c-14 -6 -18 -11 -9 -13 c5 -1 8 2 9 4 c1 -2 4 -5 9 -4 c9 2 5 7 -9 13 Z" fill="#FBF7EE"/>
+          <use href="#c1" fill="url(#h-choc)"/>
+          <use href="#c1" fill="url(#h-grid)"/>
+          <g clip-path="url(#cl1)"><rect x="80" y="232" width="140" height="15" fill="#24140C" opacity=".35"/><rect x="80" y="232" width="140" height="150" fill="url(#h-shade)"/></g>
+          <use href="#c1" fill="url(#h-gloss)"/>
+          <ellipse cx="150" cy="232" rx="66" ry="13" fill="#8E5A39"/>
+          <ellipse cx="150" cy="232" rx="66" ry="13" fill="none" stroke="#24140C" stroke-width="1.5"/>
+          <ellipse cx="150" cy="233" rx="59" ry="10.5" fill="#3A2114"/>
+          <ellipse cx="150" cy="235" rx="56" ry="8.5" fill="url(#h-latte)"/>
+          <path d="M150 241.5 c-15 -5 -20 -10 -10 -12 c5 -1 8 1.5 10 4 c2 -2.5 5 -5 10 -4 c10 2 5 7 -10 12 Z" fill="#FBF7EE"/>
+          <path d="M150 241.5 q-1 3 -4 4" stroke="#FBF7EE" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M98 228 q20 -5 38 -6" stroke="#C99A5B" stroke-width="2" fill="none" opacity=".6" stroke-linecap="round"/>
           <g class="steam" fill="none" stroke="#FBF7EE" stroke-width="5" stroke-linecap="round">
             <path d="M128 212 c-10 -12 10 -18 0 -32 c-8 -10 6 -16 2 -24"/>
             <path d="M152 210 c-10 -12 10 -18 0 -32 c-8 -10 6 -16 2 -24"/>
@@ -253,12 +285,17 @@
 
         <!-- Cup 2: Vanilla + chai -->
         <g class="float float--delay">
-          <ellipse cx="290" cy="382" rx="66" ry="7" fill="#000" opacity=".3"/>
-          <path d="M212 196 L368 196 L348 370 Q346 380 336 380 L244 380 Q234 380 232 370 Z" fill="url(#h-van)"/>
-          <path d="M212 196 L368 196 L348 370 Q346 380 336 380 L244 380 Q234 380 232 370 Z" fill="url(#h-grid)"/>
-          <ellipse cx="290" cy="196" rx="78" ry="15" fill="#F6E3A8" stroke="#A8823F" stroke-width="2"/>
-          <ellipse cx="290" cy="198" rx="68" ry="11" fill="#B8692E"/>
-          <path d="M250 198 q40 -10 80 0" stroke="#D99A5E" stroke-width="2.5" fill="none"/>
+          <use href="#c2" fill="url(#h-van)"/>
+          <use href="#c2" fill="url(#h-grid)"/>
+          <g clip-path="url(#cl2)"><rect x="208" y="196" width="164" height="17" fill="#8C6A2F" opacity=".35"/><rect x="208" y="196" width="164" height="190" fill="url(#h-shade)"/></g>
+          <use href="#c2" fill="url(#h-gloss)"/>
+          <ellipse cx="290" cy="196" rx="78" ry="15" fill="#F6E3A8"/>
+          <ellipse cx="290" cy="196" rx="78" ry="15" fill="none" stroke="#A8823F" stroke-width="1.5"/>
+          <ellipse cx="290" cy="197" rx="70" ry="12" fill="#A8823F"/>
+          <ellipse cx="290" cy="199" rx="66" ry="10" fill="url(#h-chai)"/>
+          <ellipse cx="290" cy="199" rx="58" ry="7.5" fill="none" stroke="#E2B07A" stroke-width="2" opacity=".55"/>
+          <g fill="#F6E3A8" opacity=".7"><circle cx="262" cy="200" r="1.6"/><circle cx="268" cy="203" r="1.1"/><circle cx="316" cy="197" r="1.4"/><circle cx="322" cy="201" r="1"/></g>
+          <path d="M226 191 q26 -6 52 -7" stroke="#fff" stroke-width="2.2" fill="none" opacity=".6" stroke-linecap="round"/>
           <g class="steam" fill="none" stroke="#FBF7EE" stroke-width="6" stroke-linecap="round">
             <path d="M262 174 c-12 -14 12 -22 0 -38 c-10 -12 8 -18 2 -28"/>
             <path d="M292 170 c-12 -14 12 -22 0 -38 c-10 -12 8 -18 2 -28"/>
@@ -268,15 +305,24 @@
 
         <!-- Cup 3: Elaichi + ice cream -->
         <g class="float">
-          <ellipse cx="440" cy="380" rx="54" ry="6" fill="#000" opacity=".3"/>
-          <path d="M378 244 L502 244 L486 368 Q484 378 476 378 L404 378 Q396 378 394 368 Z" fill="url(#h-ela)"/>
-          <path d="M378 244 L502 244 L486 368 Q484 378 476 378 L404 378 Q396 378 394 368 Z" fill="url(#h-grid)"/>
-          <circle cx="412" cy="228" r="27" fill="#FBF7EE"/>
-          <circle cx="468" cy="228" r="27" fill="#E9C98F"/>
-          <circle cx="440" cy="202" r="29" fill="#6B3F27"/>
-          <path d="M392 222 q8 -10 18 -4 v10 q3 5 6 0 v-8 q8 -4 14 2" fill="#5A3522" opacity=".9"/>
-          <ellipse cx="440" cy="244" rx="62" ry="12" fill="#E6DFAE" stroke="#8C8A40" stroke-width="2" opacity=".9"/>
-          <circle cx="447" cy="176" r="6" fill="#8E1F2B"/>
+          <use href="#c3" fill="url(#h-ela)"/>
+          <use href="#c3" fill="url(#h-grid)"/>
+          <g clip-path="url(#cl3)"><rect x="374" y="244" width="132" height="14" fill="#5E5C28" opacity=".3"/><rect x="374" y="244" width="132" height="140" fill="url(#h-shade)"/></g>
+          <use href="#c3" fill="url(#h-gloss)"/>
+          <!-- rolled wafer stick -->
+          <g transform="rotate(18 470 190)"><rect x="462" y="140" width="12" height="80" rx="6" fill="#C99A5B"/><path d="M462 152 l12 -6 M462 168 l12 -6 M462 184 l12 -6 M462 200 l12 -6" stroke="#8C6A2F" stroke-width="1.6"/></g>
+          <circle cx="412" cy="230" r="27" fill="url(#h-scoopV)"/>
+          <circle cx="468" cy="230" r="27" fill="url(#h-scoopW)"/>
+          <circle cx="440" cy="204" r="29" fill="url(#h-scoopC)"/>
+          <!-- chocolate drips -->
+          <path d="M413 210 Q440 236 467 210 L467 214 q-2 9 -5 1 q-3 12 -7 2 q-4 8 -8 -1 q-3 11 -7 0 q-4 8 -8 -1 q-3 7 -6 -3 Z" fill="#4A2A18"/>
+          <g stroke-linecap="round" stroke-width="3">
+            <path d="M430 186 l5 -2" stroke="#F6E3A8"/><path d="M448 192 l4 3" stroke="#FBF7EE"/><path d="M438 200 l-4 3" stroke="#E9C98F"/><path d="M454 182 l2 -4" stroke="#FBF7EE"/><path d="M424 198 l1 4" stroke="#F6E3A8"/>
+          </g>
+          <ellipse cx="430" cy="194" rx="7" ry="4" fill="#fff" opacity=".22" transform="rotate(-25 430 194)"/>
+          <ellipse cx="440" cy="246" rx="62" ry="10" fill="#E6DFAE"/>
+          <ellipse cx="440" cy="246" rx="62" ry="10" fill="none" stroke="#7E7C38" stroke-width="1.5"/>
+          <path d="M392 244 q18 -4 30 -5" stroke="#fff" stroke-width="2" fill="none" opacity=".5" stroke-linecap="round"/>
         </g>
       </svg>
 
@@ -509,7 +555,7 @@
         </ul>
         <div class="contact-info__seal">
           <div class="fssai-seal"><div><svg class="icon" aria-hidden="true"><use href="#i-seal"/></svg>FSSAI<br>Registered</div></div>
-          <p style="margin:0">Reg. no.<br><span data-bind="fssaiNumber"><em class="ph">[[PLACEHOLDER: FSSAI reg. no.]]</em></span></p>
+          <p style="margin:0" data-ph-container>Reg. no.<br><span data-bind="fssaiNumber"><em class="ph">[[PLACEHOLDER: FSSAI reg. no.]]</em></span></p>
         </div>
       </div>
 
@@ -656,7 +702,7 @@
           <li><a class="row" data-wa href="https://wa.me/919818192575?text=Hi%20CUP2EAT%2C%20I'd%20like%20to%20know%20about%20edible%20cups." target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>WhatsApp us</a></li>
           <li><a class="row" data-instagram href="https://www.instagram.com/cup2eat/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg><span data-bind="instagramHandle">@cup2eat</span></a></li>
           <li><span data-bind="location">Ghaziabad, Delhi NCR, India</span></li>
-          <li>FSSAI no.: <span data-bind="fssaiNumber"><em class="ph">[[PLACEHOLDER: FSSAI reg. no.]]</em></span></li>
+          <li data-ph-container>FSSAI no.: <span data-bind="fssaiNumber"><em class="ph">[[PLACEHOLDER: FSSAI reg. no.]]</em></span></li>
         </ul>
       </div>
     </div>

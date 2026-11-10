@@ -12,6 +12,15 @@
 
 window.CUP2EAT = {
 
+  /* ---------- Presentation switch ----------
+     false → "clean demo" mode: every unfinished item is hidden or replaced
+             with a neutral fallback (sample reviews, unanswered FAQs, the
+             FSSAI no., catalogue link, placeholder photos…). Use this when
+             showing the site to people.
+     true  → show every [[PLACEHOLDER]] / [[CONFIRM]] in a dashed gold box,
+             so the owner can see exactly what still needs filling in. */
+  showPlaceholders: false,
+
   /* ---------- Contact & links ---------- */
   contact: {
     phoneDisplay: "+91 98181 92575",          // shown on the page
@@ -105,18 +114,20 @@ window.CUP2EAT = {
   pricingFootnote: "Prices include delivery anywhere in India. Prices valid as per current offer; for custom quantities or flavours, request a quote.",
 
   /* ---------- Journey / Seen at ---------- */
+  /* icon: shown instead of the photo while the image is still a -REPLACE placeholder
+     (choose from: graduation, store, gem, award, pin, truck, heart, gift, cup) */
   journey: [
-    { tag: "College fests", caption: "Loved by students at Lady Shri Ram College (LSR), Delhi",
+    { tag: "College fests", icon: "graduation", caption: "Loved by students at Lady Shri Ram College (LSR), Delhi",
       image: "assets/images/journey-lsr-stall-REPLACE.svg", alt: "CUP2EAT stall at a college fest at Lady Shri Ram College" },
-    { tag: "Live stalls", caption: "Live stalls at fests & events across Delhi NCR",
+    { tag: "Live stalls", icon: "store", caption: "Live stalls at fests & events across Delhi NCR",
       image: "assets/images/journey-event-stall-REPLACE.svg", alt: "CUP2EAT event stall with FSSAI banner" },
-    { tag: "Startup Mahakumbh 2025", caption: "Founder Varun Khera at Startup Mahakumbh 2025, Bharat Mandapam, New Delhi",
+    { tag: "Startup Mahakumbh 2025", icon: "gem", caption: "Founder Varun Khera at Startup Mahakumbh 2025, Bharat Mandapam, New Delhi",
       image: "assets/images/journey-startup-mahakumbh-REPLACE.svg", alt: "Founder Varun Khera at Startup Mahakumbh 2025" },
-    { tag: "Award", caption: "1st Position: Business Plan Competition, SPECTRA 2025, IPEM Ghaziabad",
+    { tag: "Award", icon: "award", caption: "1st Position: Business Plan Competition, SPECTRA 2025, IPEM Ghaziabad",
       image: "assets/images/journey-spectra-award-REPLACE.svg", alt: "First position certificate at SPECTRA 2025 business plan competition" },
-    { tag: "Pragati Maidan · IITF", caption: "This year a visitor, very soon an exhibitor 🙏",
+    { tag: "Pragati Maidan · IITF", icon: "pin", caption: "This year a visitor, very soon an exhibitor 🙏",
       image: "assets/images/journey-iitf-REPLACE.svg", alt: "Founder visiting the India International Trade Fair at Pragati Maidan" },
-    { tag: "Pan-India dispatch", caption: "From Ghaziabad to Odisha: CUP2EAT is reaching more people, one order at a time.",
+    { tag: "Pan-India dispatch", icon: "truck", caption: "From Ghaziabad to Odisha: CUP2EAT is reaching more people, one order at a time.",
       image: "assets/images/journey-dispatch-REPLACE.svg", alt: "Packed CUP2EAT boxes ready for dispatch" }
   ],
 

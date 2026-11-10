@@ -36,7 +36,16 @@ Open **`js/content.js`** in any text editor (Notepad works). Everything that cha
 | FAQ | `faq` |
 
 Keep the quotes `"…"` and commas, then save the file and refresh the browser.
-Any value starting with `[[PLACEHOLDER` or `[[CONFIRM` shows on the page with a dashed gold box so it's easy to spot.
+
+### Clean demo mode vs. placeholder mode
+The first setting in `content.js` controls how unfinished content appears:
+
+| `showPlaceholders` | What visitors see |
+|---|---|
+| `false` (default) | A **clean, presentable site**. Sample reviews are replaced by an "View feedback on Instagram" card. Unanswered FAQs, the FSSAI number line and the catalogue link are hidden. The Sample Box shows "Price on request". Journey cards and the founder portrait show emblems instead of grey photo boxes. |
+| `true` | Every `[[PLACEHOLDER]]` / `[[CONFIRM]]` item appears in a dashed gold box, so the owner can see exactly what is missing. |
+
+Everything reappears automatically once real content is entered. For example, once you add a real review (and remove `sample: true`), the slider comes back.
 
 Fixed text such as the headings, hero text, comparison table and founder story lives in `index.html`. Search for the words you want to change. Every spot that needs owner input has a `<!-- REPLACE: … -->` comment.
 
@@ -110,3 +119,4 @@ The site has no checkout and no payment.
 - The WhatsApp buttons are WhatsApp green with dark text, because white on #25D366 fails WCAG AA contrast. They use a generic chat-bubble icon instead of WhatsApp's trademarked logo.
 - Section backgrounds alternate emerald and cream. The founder section is cream-50 and the FAQ is cream-100, swapped from DESIGN.md §8, so that no two sections of the same cream sit next to each other.
 - `prefers-reduced-motion` turns off the float, steam, parallax, shimmer and count-up animations.
+- **Lighthouse (mobile, gzip server):** Accessibility 100, Best Practices 100, SEO 100, Performance about 86. Real first paint on a desktop is about 0.6 s. The remaining Performance gap is mostly the extra connection to Google Fonts under Lighthouse's simulated slow 4G. Self-hosting the four fonts in `assets/fonts/` would close it, but the brief asks for Google Fonts, so they are kept. `content-visibility` was tried and rejected because it made the nav links land in the wrong place.
